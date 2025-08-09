@@ -1,0 +1,299 @@
+.payment-preferences {
+  @apply bg-white dark:bg-black-800 rounded-xl;
+  @apply border border-white-200 dark:border-black-700;
+  @apply overflow-hidden mb-4;
+}
+
+.header {
+  @apply flex items-center justify-between p-5 cursor-pointer;
+  @apply transition-colors duration-200;
+
+  &:hover {
+    @apply bg-gray-50 dark:bg-black-700;
+  }
+
+  .header-content {
+    @apply flex-1;
+
+    h3 {
+      @apply text-lg font-semibold mb-1;
+      @apply text-black-900 dark:text-white-100;
+    }
+
+    .status {
+      @apply text-sm;
+      
+      .custom-enabled {
+        @apply text-green-600 dark:text-green-400 font-medium;
+      }
+      
+      .dynamic-enabled {
+        @apply text-black-600 dark:text-white-400;
+      }
+    }
+  }
+
+  .expand-icon {
+    @apply transition-transform duration-200;
+    @apply text-black-500 dark:text-white-400;
+
+    &.expanded {
+      @apply rotate-180;
+    }
+  }
+}
+
+.content {
+  @apply border-t border-white-200 dark:border-black-700 p-5;
+}
+
+  .toggle-section {
+    @apply mb-6;
+
+    .toggle-control {
+      @apply flex items-center gap-3 cursor-pointer mb-2;
+
+      input[type="checkbox"] {
+        @apply hidden;
+      }
+
+      .toggle-slider {
+        @apply relative w-11 h-6 rounded-xl transition-colors duration-200;
+        @apply bg-gray-300 dark:bg-gray-600;
+
+        &::before {
+          @apply absolute top-0.5 left-0.5 w-5 h-5 bg-white rounded-full;
+          @apply transition-transform duration-200;
+          content: '';
+        }
+      }
+
+      input:checked + .toggle-slider {
+        @apply bg-green-600 dark:bg-green-500;
+
+        &::before {
+          @apply translate-x-5;
+        }
+      }
+
+      .toggle-label {
+        @apply font-medium text-black-900 dark:text-white-100;
+      }
+    }
+
+    .toggle-description {
+      @apply text-sm text-black-600 dark:text-white-400 leading-relaxed;
+    }
+  }
+
+  .custom-amounts-section {
+    @apply mb-6;
+
+    h4 {
+      @apply text-base font-semibold mb-4;
+      @apply text-black-900 dark:text-white-100;
+    }
+
+    .amount-config {
+      @apply grid grid-cols-[80px_1fr] gap-3 items-start mb-4;
+
+      &:last-child {
+        @apply mb-0;
+      }
+
+      .amount-label {
+        @apply text-sm font-medium pt-2;
+        @apply text-black-700 dark:text-white-300;
+      }
+
+      .amount-controls {
+        @apply flex items-center gap-2;
+
+        .input-group {
+          @apply relative flex-1;
+
+          .amount-input {
+            @apply w-full px-3 py-2 pr-12 rounded-lg border;
+            @apply border-white-300 dark:border-black-600;
+            @apply bg-white dark:bg-black-700;
+            @apply text-black-900 dark:text-white-100;
+            @apply text-sm font-medium;
+            @apply focus:ring-2 focus:ring-kaspa-500 focus:border-kaspa-500;
+            @apply placeholder-black-400 dark:placeholder-white-400;
+            @apply transition-colors duration-200;
+
+            &:focus {
+              @apply outline-none;
+            }
+          }
+
+          .input-unit {
+            @apply absolute right-3 top-1/2 transform -translate-y-1/2;
+            @apply text-black-600 dark:text-white-400 text-sm font-medium;
+            @apply pointer-events-none;
+          }
+        }
+
+        .reset-btn {
+          @apply w-8 h-8 border-0 rounded-md cursor-pointer font-semibold text-base;
+          @apply flex items-center justify-center transition-colors duration-200;
+          @apply bg-red-100 dark:bg-red-900/20 text-red-600 dark:text-red-400;
+
+          &:hover {
+            @apply bg-red-200 dark:bg-red-900/30;
+          }
+        }
+      }
+
+      .amount-info {
+        @apply col-start-2 flex items-center gap-2 text-xs mt-1;
+
+        .calculated {
+          @apply text-black-500 dark:text-white-400;
+        }
+
+        .savings {
+          @apply font-semibold px-1.5 py-0.5 rounded;
+
+          &.higher {
+            @apply text-red-600 dark:text-red-400;
+            @apply bg-red-100 dark:bg-red-900/20;
+          }
+
+          &.lower {
+            @apply text-green-600 dark:text-green-400;
+            @apply bg-green-100 dark:bg-green-900/20;
+          }
+        }
+      }
+    }
+  }
+
+.actions-section {
+  @apply flex justify-center items-center mb-4 pt-4;
+  @apply border-t border-white-200 dark:border-black-700;
+
+  .btn {
+    @apply px-4 py-2 rounded-lg text-sm font-medium cursor-pointer;
+    @apply transition-all duration-200 no-underline;
+    @apply inline-flex items-center justify-center;
+
+    &.btn-secondary {
+      @apply bg-red-100 dark:bg-red-900/20 border border-red-200 dark:border-red-800;
+      @apply text-red-600 dark:text-red-400;
+
+      &:hover {
+        @apply bg-red-200 dark:bg-red-900/30;
+      }
+    }
+  }
+}
+
+.help-section {
+  .help-text {
+    @apply text-xs leading-relaxed mb-2;
+    @apply text-black-600 dark:text-white-400;
+
+    &:last-child {
+      @apply mb-0;
+    }
+
+    strong {
+      @apply text-black-700 dark:text-white-300;
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .payment-preferences {
+    .content {
+      @apply p-4;
+    }
+
+    .custom-amounts-section {
+      .amount-config {
+        @apply grid-cols-1 gap-2;
+
+        .amount-label {
+          @apply pt-0;
+        }
+
+        .amount-info {
+          @apply col-start-1 mt-2;
+        }
+      }
+    }
+
+    .actions-section {
+      .btn {
+        @apply w-full;
+      }
+    }
+  }
+}
+
+/* Cyberpunk theme styles */
+:host-context(.cyberpunk-theme) .payment-preferences {
+  @apply bg-cyber-dark-2 border border-white-200 dark:border-black-700;
+}
+
+:host-context(.cyberpunk-theme) .status .custom-enabled {
+  @apply text-neon-cyan font-tech;
+  text-shadow: 0 0 5px rgba(0, 255, 255, 0.6);
+}
+
+:host-context(.cyberpunk-theme) .toggle-control input:checked + .toggle-slider {
+  @apply bg-neon-cyan;
+  box-shadow: 0 0 10px rgba(0, 255, 255, 0.4);
+}
+
+:host-context(.cyberpunk-theme) .amount-input {
+  @apply border-neon-cyan/30 bg-cyber-dark-3 text-white-200;
+  @apply focus:ring-neon-cyan/20 focus:border-neon-cyan rounded-none;
+  
+  &::placeholder {
+    @apply text-cyber-gray-5;
+    opacity: 0.5;
+  }
+}
+
+:host-context(.cyberpunk-theme) .savings.lower {
+  @apply text-neon-cyan bg-neon-cyan/10;
+}
+
+:host-context(.cyberpunk-theme) .content {
+  @apply border-t border-neon-cyan/30;
+  position: relative;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: -1px;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, #00FFFF, transparent);
+    animation: stat-line-glow 2s ease-in-out infinite alternate;
+  }
+}
+
+:host-context(.cyberpunk-theme) .actions-section {
+  @apply border-t border-neon-cyan/30;
+  position: relative;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: -1px;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, #00FFFF, transparent);
+    animation: stat-line-glow 2s ease-in-out infinite alternate;
+  }
+}
+
+@keyframes stat-line-glow {
+  0% { opacity: 0.5; }
+  100% { opacity: 1; }
+}

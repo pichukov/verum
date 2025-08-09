@@ -1,0 +1,295 @@
+<div class="payment-preferences">
+  <!-- Header with expand/collapse toggle -->
+  <div class="header" (click)="toggleExpanded()">
+    <div class="header-content">
+      <h3>Payment Preferences</h3>
+      <div class="status">
+        @if (customAmountsEnabled()) {
+          <span class="custom-enabled">Custom amounts enabled</span>
+        } @else {
+          <span class="dynamic-enabled">Dynamic amounts, switch to custom amounts if you want to set up it manually</span>
+        }
+      </div>
+    </div>
+    <div class="expand-icon" [class.expanded]="isExpanded()">
+      <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
+        <path d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"/>
+      </svg>
+    </div>
+  </div>
+
+  <!-- Expandable content -->
+  @if (isExpanded()) {
+    <div class="content">
+      <!-- Main toggle for custom amounts -->
+      <div class="toggle-section">
+        <label class="toggle-control">
+          <input 
+            type="checkbox" 
+            [checked]="customAmountsEnabled()" 
+            (change)="toggleCustomAmounts()"
+          >
+          <span class="toggle-slider"></span>
+          <span class="toggle-label">Use custom payment amounts</span>
+        </label>
+        <p class="toggle-description">
+          When enabled, you can set specific amounts for each action instead of using dynamic calculations based on KAS price.
+        </p>
+      </div>
+
+      <!-- Custom amounts configuration (shown when enabled) -->
+      @if (customAmountsEnabled()) {
+        <div class="custom-amounts-section">
+          <h4>Custom Payment Amounts</h4>
+          
+          <!-- Subscribe amount -->
+          <div class="amount-config">
+            <label class="amount-label">Subscribe</label>
+            <div class="amount-controls">
+              <div class="input-group">
+                <input 
+                  type="number" 
+                  step="0.001" 
+                  min="0.001"
+                  [value]="customAmounts().subscribe || ''"
+                  placeholder="Custom amount"
+                  (blur)="setCustomAmount('subscribe', $event)"
+                  class="amount-input"
+                >
+                <span class="input-unit">KAS</span>
+              </div>
+              @if (customAmounts().subscribe) {
+                <button 
+                  type="button" 
+                  class="reset-btn"
+                  (click)="removeCustomAmount('subscribe')"
+                  title="Reset to dynamic calculation"
+                >
+                  ↻
+                </button>
+              }
+            </div>
+            <div class="amount-info">
+              <span class="calculated">Dynamic: {{ formatKasAmount(calculatedAmounts().subscribe) }}</span>
+              @if (customAmounts().subscribe) {
+                @let savings = getSavingsInfo('subscribe');
+                <span class="savings" [class.higher]="savings.isHigher" [class.lower]="!savings.isHigher">
+                  {{ savings.isHigher ? '+' : '-' }}{{ savings.savingsFormatted }}
+                </span>
+              }
+            </div>
+          </div>
+
+          <!-- Comment amount -->
+          <div class="amount-config">
+            <label class="amount-label">Comment</label>
+            <div class="amount-controls">
+              <div class="input-group">
+                <input 
+                  type="number" 
+                  step="0.001" 
+                  min="0.001"
+                  [value]="customAmounts().comment || ''"
+                  placeholder="Custom amount"
+                  (blur)="setCustomAmount('comment', $event)"
+                  class="amount-input"
+                >
+                <span class="input-unit">KAS</span>
+              </div>
+              @if (customAmounts().comment) {
+                <button 
+                  type="button" 
+                  class="reset-btn"
+                  (click)="removeCustomAmount('comment')"
+                  title="Reset to dynamic calculation"
+                >
+                  ↻
+                </button>
+              }
+            </div>
+            <div class="amount-info">
+              <span class="calculated">Dynamic: {{ formatKasAmount(calculatedAmounts().comment) }}</span>
+              @if (customAmounts().comment) {
+                @let savings = getSavingsInfo('comment');
+                <span class="savings" [class.higher]="savings.isHigher" [class.lower]="!savings.isHigher">
+                  {{ savings.isHigher ? '+' : '-' }}{{ savings.savingsFormatted }}
+                </span>
+              }
+            </div>
+          </div>
+
+          <!-- Like amount -->
+          <div class="amount-config">
+            <label class="amount-label">Like</label>
+            <div class="amount-controls">
+              <div class="input-group">
+                <input 
+                  type="number" 
+                  step="0.001" 
+                  min="0.001"
+                  [value]="customAmounts().like || ''"
+                  placeholder="Custom amount"
+                  (blur)="setCustomAmount('like', $event)"
+                  class="amount-input"
+                >
+                <span class="input-unit">KAS</span>
+              </div>
+              @if (customAmounts().like) {
+                <button 
+                  type="button" 
+                  class="reset-btn"
+                  (click)="removeCustomAmount('like')"
+                  title="Reset to dynamic calculation"
+                >
+                  ↻
+                </button>
+              }
+            </div>
+            <div class="amount-info">
+              <span class="calculated">Dynamic: {{ formatKasAmount(calculatedAmounts().like) }}</span>
+              @if (customAmounts().like) {
+                @let savings = getSavingsInfo('like');
+                <span class="savings" [class.higher]="savings.isHigher" [class.lower]="!savings.isHigher">
+                  {{ savings.isHigher ? '+' : '-' }}{{ savings.savingsFormatted }}
+                </span>
+              }
+            </div>
+          </div>
+
+          <!-- Post amount -->
+          <div class="amount-config">
+            <label class="amount-label">Post</label>
+            <div class="amount-controls">
+              <div class="input-group">
+                <input 
+                  type="number" 
+                  step="0.001" 
+                  min="0.001"
+                  [value]="customAmounts().post || ''"
+                  placeholder="Custom amount"
+                  (blur)="setCustomAmount('post', $event)"
+                  class="amount-input"
+                >
+                <span class="input-unit">KAS</span>
+              </div>
+              @if (customAmounts().post) {
+                <button 
+                  type="button" 
+                  class="reset-btn"
+                  (click)="removeCustomAmount('post')"
+                  title="Reset to dynamic calculation"
+                >
+                  ↻
+                </button>
+              }
+            </div>
+            <div class="amount-info">
+              <span class="calculated">Dynamic: {{ formatKasAmount(calculatedAmounts().post) }}</span>
+              @if (customAmounts().post) {
+                @let savings = getSavingsInfo('post');
+                <span class="savings" [class.higher]="savings.isHigher" [class.lower]="!savings.isHigher">
+                  {{ savings.isHigher ? '+' : '-' }}{{ savings.savingsFormatted }}
+                </span>
+              }
+            </div>
+          </div>
+
+          <!-- Note amount -->
+          <div class="amount-config">
+            <label class="amount-label">Note</label>
+            <div class="amount-controls">
+              <div class="input-group">
+                <input 
+                  type="number" 
+                  step="0.001" 
+                  min="0.001"
+                  [value]="customAmounts().note || ''"
+                  placeholder="Custom amount"
+                  (blur)="setCustomAmount('note', $event)"
+                  class="amount-input"
+                >
+                <span class="input-unit">KAS</span>
+              </div>
+              @if (customAmounts().note) {
+                <button 
+                  type="button" 
+                  class="reset-btn"
+                  (click)="removeCustomAmount('note')"
+                  title="Reset to dynamic calculation"
+                >
+                  ↻
+                </button>
+              }
+            </div>
+            <div class="amount-info">
+              <span class="calculated">Dynamic: {{ formatKasAmount(calculatedAmounts().note) }}</span>
+              @if (customAmounts().note) {
+                @let savings = getSavingsInfo('note');
+                <span class="savings" [class.higher]="savings.isHigher" [class.lower]="!savings.isHigher">
+                  {{ savings.isHigher ? '+' : '-' }}{{ savings.savingsFormatted }}
+                </span>
+              }
+            </div>
+          </div>
+
+          <!-- Story amount -->
+          <div class="amount-config">
+            <label class="amount-label">Story</label>
+            <div class="amount-controls">
+              <div class="input-group">
+                <input 
+                  type="number" 
+                  step="0.001" 
+                  min="0.001"
+                  [value]="customAmounts().story || ''"
+                  placeholder="Custom amount"
+                  (blur)="setCustomAmount('story', $event)"
+                  class="amount-input"
+                >
+                <span class="input-unit">KAS</span>
+              </div>
+              @if (customAmounts().story) {
+                <button 
+                  type="button" 
+                  class="reset-btn"
+                  (click)="removeCustomAmount('story')"
+                  title="Reset to dynamic calculation"
+                >
+                  ↻
+                </button>
+              }
+            </div>
+            <div class="amount-info">
+              <span class="calculated">Dynamic: {{ formatKasAmount(calculatedAmounts().story) }}</span>
+              @if (customAmounts().story) {
+                @let savings = getSavingsInfo('story');
+                <span class="savings" [class.higher]="savings.isHigher" [class.lower]="!savings.isHigher">
+                  {{ savings.isHigher ? '+' : '-' }}{{ savings.savingsFormatted }}
+                </span>
+              }
+            </div>
+          </div>
+        </div>
+      }
+
+      <!-- Actions -->
+      <div class="actions-section">
+        <button 
+          type="button" 
+          class="btn btn-secondary"
+          (click)="resetAllPreferences()"
+        >
+          Reset to Defaults
+        </button>
+      </div>
+
+      <!-- Help text -->
+      <div class="help-section">
+        <p class="help-text">
+          <strong>Dynamic amounts</strong> adjust automatically based on current KAS price to maintain consistent USD value. 
+          <strong>Custom amounts</strong> let you set fixed KAS amounts for each action.
+        </p>
+      </div>
+    </div>
+  }
+</div>

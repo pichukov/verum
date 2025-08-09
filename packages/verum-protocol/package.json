@@ -1,0 +1,37 @@
+{
+  "name": "@verum/protocol",
+  "version": "0.1.0",
+  "description": "Verum Protocol - Transaction creation and validation for the Verum social protocol on Kaspa blockchain",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "test": "vitest",
+    "test:run": "vitest run",
+    "lint": "eslint src --ext .ts"
+  },
+  "keywords": [
+    "verum",
+    "kaspa",
+    "blockchain",
+    "social",
+    "protocol"
+  ],
+  "author": "Verum Protocol Team",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "@typescript-eslint/eslint-plugin": "^6.0.0",
+    "@typescript-eslint/parser": "^6.0.0",
+    "eslint": "^8.0.0",
+    "typescript": "^5.0.0",
+    "vitest": "^1.0.0"
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "publishConfig": {
+    "access": "public"
+  }
+}

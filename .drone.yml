@@ -1,0 +1,86 @@
+kind: pipeline
+type: docker
+name: prod
+
+
+trigger:
+  branch:
+    - main
+  event:
+    include:
+      - push
+
+steps:
+- name: Build docker image & push to repository
+  image: plugins/docker
+  settings:
+    registry: ghcr.io
+    repo: ghcr.io/kasunder/verum-frontend
+    tags:
+      - ${DRONE_COMMIT_SHA:0:7}
+      - ${DRONE_COMMIT_BRANCH}
+    force_tag: true
+    use_cache: true
+    prune: false
+    username:
+      from_secret: GITHUB_USERNAME
+    password:
+      from_secret: GITHUB_TOKEN
+
+- name: update values.prod.yaml
+  image: alpine:3.19
+  environment:
+    SSH_KEY:
+      from_secret: ssh-key
+  commands:
+    - apk add git yq openssh
+    - mkdir -p ~/.ssh
+    - echo "$SSH_KEY" > ~/.ssh/id_rsa
+    - chmod 600 ~/.ssh/id_rsa
+    - ssh-keyscan github.com >> ~/.ssh/known_hosts
+
+    - git clone git@github.com:kasunder/helm-charts.git
+    - cd helm-charts/verum-frontend
+    - 'echo "DRONE_COMMIT_SHA: ${DRONE_COMMIT_SHA:0:7}"'
+    - yq -i '.image.tag = "${DRONE_COMMIT_SHA:0:7}"' values.prod.yaml
+    - git config user.name "drone-ci"
+    - git config user.email "drone@ci"
+    - git add values.prod.yaml
+    - 'git commit -m "ci: update verum-frontend image tag to ${DRONE_COMMIT_SHA:0:7}"'
+    - git push origin main
+
+- name: Notification
+  pull: always
+  image: appleboy/drone-telegram:linux-amd64
+  settings:
+    message: "❌  Build #{{build.number}} of `{{repo.name}}` failed.\n\n📝 Commit by {{commit.author}} on `{{commit.branch}}`:\n``` {{commit.message}} ```\n\n🌐 {{ build.link }}\n"
+    to:
+      from_secret: tg_to
+    token:
+      from_secret: tg_token
+  when:
+    status: [failure]
+
+---
+
+kind: secret
+name: ssh-key
+get:
+  path: kv/data/drone/ssh
+  name: private-key
+
+---
+
+kind: secret
+name: tg_to
+get:
+  path: kv/data/telegram
+  name: to
+
+---
+
+kind: secret
+name: tg_token
+get:
+  path: kv/data/telegram
+  name: token

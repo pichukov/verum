@@ -1,0 +1,163 @@
+/* You can add global styles to this file, and also import other style files */
+@use 'styles/variables';
+@use 'styles/cyberpunk';
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom markdown styles for posts and comments */
+markdown {
+  @apply text-sm leading-relaxed font-body;
+  
+  /* Headers */
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-heading font-semibold text-black-900 dark:text-white-100;
+    @apply mt-4 mb-2;
+  }
+  
+  h1 { @apply text-xl; }
+  h2 { @apply text-lg; }
+  h3 { @apply text-base; }
+  h4, h5, h6 { @apply text-sm; }
+  
+  /* Paragraphs */
+  p {
+    @apply text-black-700 dark:text-white-300 font-body;
+    @apply mb-2;
+  }
+  
+  /* Lists */
+  ul, ol {
+    @apply text-black-700 dark:text-white-300 font-body;
+    @apply mb-2 pl-4;
+  }
+  
+  ul {
+    @apply list-disc;
+  }
+  
+  ol {
+    @apply list-decimal;
+  }
+  
+  li {
+    @apply mb-1;
+  }
+  
+  /* Links */
+  a {
+    @apply text-kaspa-600 dark:text-kaspa-400;
+    @apply hover:text-kaspa-700 dark:hover:text-kaspa-300;
+    @apply underline;
+  }
+  
+  /* Code */
+  code {
+    @apply bg-gray-100 dark:bg-black-700;
+    @apply text-black-900 dark:text-white-100;
+    @apply px-1 py-0.5 rounded text-xs font-mono;
+  }
+  
+  pre {
+    @apply bg-gray-100 dark:bg-black-700;
+    @apply text-black-900 dark:text-white-100;
+    @apply p-3 rounded mb-2 overflow-x-auto font-mono;
+    
+    code {
+      @apply bg-transparent px-0 py-0;
+    }
+  }
+  
+  /* Blockquotes */
+  blockquote {
+    @apply border-l-4 border-gray-300 dark:border-black-600;
+    @apply pl-4 italic text-black-600 dark:text-white-400;
+    @apply mb-2;
+  }
+  
+  /* Tables */
+  table {
+    @apply border-collapse border border-gray-300 dark:border-black-600;
+    @apply mb-2 w-full text-sm;
+  }
+  
+  th, td {
+    @apply border border-gray-300 dark:border-black-600;
+    @apply px-2 py-1;
+  }
+  
+  th {
+    @apply bg-gray-100 dark:bg-black-700;
+    @apply font-semibold text-black-900 dark:text-white-100;
+  }
+  
+  td {
+    @apply text-black-700 dark:text-white-300;
+  }
+  
+  /* Horizontal rule */
+  hr {
+    @apply border-gray-300 dark:border-black-600;
+    @apply my-4;
+  }
+  
+  /* Strong and emphasis */
+  strong {
+    @apply font-bold text-black-900 dark:text-white-100;
+  }
+  
+  em {
+    @apply italic;
+  }
+}
+
+/* Global styles */
+html {
+  @apply transition-colors duration-300;
+}
+
+/* Default body styles */
+body {
+  @apply bg-gray-50 dark:bg-black-900 text-black-900 dark:text-white-100;
+  @apply font-body transition-colors duration-300;
+}
+
+/* Cyberpunk theme styles - only applied when cyberpunk-theme class is present */
+.cyberpunk-theme body {
+  @apply bg-cyber-dark-1 text-gray-200 font-tech;
+  background-image: 
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(0, 255, 255, 0.03) 2px,
+      rgba(0, 255, 255, 0.03) 4px
+    );
+}
+
+/* Apply cyberpunk styles when theme is active */
+.cyberpunk-theme {
+  @extend .cyberpunk;
+}
+
+/* Custom scrollbar for dark mode */
+::-webkit-scrollbar {
+  @apply w-2;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-white-200 dark:bg-black-800;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-black-300 dark:bg-black-600 rounded-full;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-black-400 dark:bg-black-500;
+}
+
+/* Focus styles for better accessibility in dark mode */
+*:focus-visible {
+  @apply outline-2 outline-offset-2 outline-primary-500;
+}

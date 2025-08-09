@@ -1,0 +1,42 @@
+{
+  "name": "@verum/sdk",
+  "version": "0.1.0",
+  "description": "Verum SDK - High-level TypeScript SDK combining protocol operations and blockchain indexing for the Verum social protocol",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "test": "vitest",
+    "test:run": "vitest run",
+    "lint": "eslint src --ext .ts"
+  },
+  "keywords": [
+    "verum",
+    "kaspa",
+    "blockchain",
+    "social",
+    "sdk",
+    "web3"
+  ],
+  "author": "Verum Protocol Team",
+  "license": "MIT",
+  "dependencies": {
+    "@verum/protocol": "file:../verum-protocol",
+    "@verum/index": "file:../verum-index"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "@typescript-eslint/eslint-plugin": "^6.0.0",
+    "@typescript-eslint/parser": "^6.0.0",
+    "eslint": "^8.0.0",
+    "typescript": "^5.0.0",
+    "vitest": "^1.0.0"
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "publishConfig": {
+    "access": "public"
+  }
+}
